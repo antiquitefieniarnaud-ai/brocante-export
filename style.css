@@ -1,0 +1,574 @@
+/* ============================================================
+   Brocante Export — style mobile, gros boutons, fort contraste
+   (utilisateur non technophile, usage en extérieur / hangar)
+   ============================================================ */
+
+:root {
+  --bg: #faf8f5;
+  --surface: #ffffff;
+  --border: #d9d2c6;
+  --text: #1c1a17;
+  --text-dim: #55504a;
+  --accent: #8a5a34;
+  --accent-text: #ffffff;
+  --success: #2e7d46;
+  --success-bg: #e3f3e6;
+  /* Assombri par rapport à la version d'origine (#b3651f) : utilisé
+     désormais en fond plein avec du texte blanc (bandeau, badge), il
+     fallait une teinte plus foncée pour garder un bon contraste
+     lisible en plein soleil. */
+  --warning: #8a4413;
+  --warning-bg: #fbecd9;
+  --danger: #a4331f;
+  --radius: 14px;
+}
+
+* { box-sizing: border-box; }
+
+/* Garantit que l'attribut "hidden" masque TOUJOURS l'élément, même quand
+   une classe (ex : celles qui mettent "display: flex") s'applique en même
+   temps. Sans cette règle, un bloc à la fois "hidden" et par ex. en
+   "display: flex" via sa classe restait affiché malgré tout (c'était le
+   cas du bloc "De / à" de la période, visible même en mode Année). */
+[hidden] { display: none !important; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 18px;
+  line-height: 1.4;
+  /* Empêche le geste "tirer vers le bas pour recharger" du navigateur
+     (Chrome Android). Sans ça, un tir accidentel de l'écran vers le bas
+     recharge toute l'application et fait perdre l'article en cours de
+     création. L'app gère elle-même son actualisation (bouton "online",
+     synchronisation en tâche de fond) : ce rechargement natif du
+     navigateur n'est jamais nécessaire ici. */
+  overscroll-behavior-y: contain;
+}
+
+.screen {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 20px 18px 100px;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 1.4rem;
+  margin: 10px 0 20px;
+  text-align: center;
+}
+
+.texte-info {
+  color: var(--text-dim);
+  text-align: center;
+  font-size: 1rem;
+}
+
+/* ---------- Boutons ---------- */
+
+.btn-geant {
+  display: block;
+  width: 100%;
+  padding: 22px 16px;
+  margin: 14px 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  border: none;
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: var(--accent-text);
+  cursor: pointer;
+}
+.btn-geant:active { opacity: 0.85; }
+.btn-geant.btn-secondaire {
+  background: var(--success);
+}
+
+.lien {
+  display: block;
+  width: 100%;
+  text-align: center;
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 1.05rem;
+  font-weight: 600;
+  padding: 14px;
+  margin: 4px 0;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* Pour une action secondaire mais utile à trouver facilement (pas juste
+   "annuler" — voir .lien ci-dessus, réservé aux actions d'abandon) : un
+   peu plus visible qu'un simple lien souligné, sans rivaliser avec le
+   bouton principal .btn-geant de l'écran. */
+.lien-secondaire {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 14px;
+  margin: 8px 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+}
+.lien-secondaire:active { background: var(--bg); }
+
+.btn-mini {
+  padding: 12px 16px;
+  font-size: 1rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 10px;
+  background: var(--accent);
+  color: var(--accent-text);
+  cursor: pointer;
+}
+.btn-mini:disabled { opacity: 0.6; cursor: default; }
+
+/* ---------- Accueil ---------- */
+
+.home-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.home-container-label {
+  font-size: 1.6rem;
+  font-weight: 800;
+}
+.home-count {
+  color: var(--text-dim);
+  font-size: 1.1rem;
+  margin-top: 4px;
+}
+.home-links { margin-top: 30px; }
+
+.home-statut {
+  text-align: center;
+  margin: 10px 0 0;
+  font-size: 0.95rem;
+  color: var(--text-dim);
+}
+.home-statut .lien-secondaire { margin: 4px 0 0; padding: 8px; font-size: 0.95rem; }
+
+/* ---------- Rappel du container actif (photo / formulaire / récap) ---------- */
+
+.bandeau-container-actif {
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--text-dim);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+/* ---------- Bandeau de synchronisation ---------- */
+/* Fond plein + texte blanc plutôt que texte coloré sur fond clair :
+   bien plus lisible en plein soleil, et c'est le seul message toujours
+   visible qui dit si les articles sont bien partis ou non. */
+
+.banner {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  padding: 12px 16px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-align: center;
+  background: var(--warning);
+  color: #ffffff;
+}
+.banner.ok {
+  background: var(--success);
+  color: #ffffff;
+}
+
+/* ---------- Liste des containers existants (nouveau container) ---------- */
+
+.liste-containers-existants {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 10px 0 24px;
+}
+.btn-container-existant {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 16px 18px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  text-align: left;
+}
+.btn-container-existant:active { background: var(--accent); color: var(--accent-text); }
+.btn-container-existant .compte {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-dim);
+}
+.btn-container-existant:active .compte { color: var(--accent-text); }
+
+.ligne-container-existant {
+  display: flex;
+  align-items: stretch;
+  gap: 6px;
+}
+.ligne-container-existant .btn-container-existant { flex: 1; }
+.btn-supprimer-container {
+  border: none;
+  background: none;
+  color: var(--danger);
+  font-size: 1.3rem;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 4px;
+  cursor: pointer;
+}
+
+/* ---------- Photo ---------- */
+
+.photo-zone {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  max-height: 340px;
+  background: var(--surface);
+  border: 2px dashed var(--border);
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin-bottom: 18px;
+}
+.photo-zone img { width: 100%; height: 100%; object-fit: cover; }
+.photo-placeholder { font-size: 4rem; opacity: 0.4; }
+
+.form-photo-mini {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+.form-photo-mini img {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 2px solid var(--border);
+}
+
+/* ---------- Formulaire ---------- */
+/* Les champs sont regroupés en 3 blocs visuels (description, quantité/poids,
+   valeur/période) plutôt que d'être tous à plat les uns sous les autres :
+   plus facile de vérifier d'un coup d'œil qu'on n'a rien oublié dans un
+   groupe, sur un écran qui a beaucoup de champs. */
+
+.bloc-carte {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 4px 16px 16px;
+  margin: 22px 0;
+}
+.titre-bloc {
+  font-size: 1.05rem;
+  font-weight: 800;
+  margin: 16px 0 4px;
+}
+
+.label-champ {
+  display: block;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  margin: 22px 0 8px;
+}
+
+textarea, input[type="text"], input[type="number"], .champ-texte-libre {
+  width: 100%;
+  padding: 14px;
+  font-size: 1.1rem;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+  font-family: inherit;
+}
+.champ-texte-libre { margin-top: 10px; }
+
+.grille-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.chip {
+  padding: 12px 18px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  border: 2px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+}
+.chip.selected {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-text);
+}
+
+/* Pastille "ajoutée" (matière/origine tapée dans "Autre") : un petit bouton
+   "×" accolé permet de la supprimer de la liste, séparément du bouton
+   principal qui sert à la sélectionner. */
+.chip-groupe { display: inline-flex; }
+.chip-groupe .chip {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right: none;
+}
+.chip-suppr {
+  padding: 0 14px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  border: 2px solid var(--border);
+  border-top-right-radius: 999px;
+  border-bottom-right-radius: 999px;
+  background: var(--surface);
+  color: var(--danger);
+  cursor: pointer;
+  min-width: 40px;
+}
+.chip-groupe .chip.selected + .chip-suppr { border-color: var(--accent); }
+
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.stepper-btn {
+  width: 56px;
+  height: 56px;
+  font-size: 1.8rem;
+  font-weight: 700;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  cursor: pointer;
+}
+.stepper-valeur {
+  flex: 1;
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: 700;
+  padding: 12px;
+}
+
+.panier-poids {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+}
+.panier-total { font-size: 1.15rem; margin-bottom: 10px; }
+
+/* Un champ de poids par colis (autant de lignes que "Nombre de colis") :
+   plus simple et plus fiable qu'une liste libre à ajouter/supprimer, et ça
+   colle exactement à la réalité physique (un poids par colis à peser). */
+.liste-pesees-colis { display: flex; flex-direction: column; gap: 8px; }
+.pesee-colis-ligne { display: flex; align-items: center; gap: 10px; }
+.pesee-colis-label { flex: 0 0 auto; min-width: 72px; font-weight: 600; color: var(--text-dim); }
+input.champ-pesee-colis { flex: 1; width: auto; }
+
+.toggle-periode { display: flex; gap: 8px; }
+.toggle-btn {
+  flex: 1;
+  padding: 14px 8px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text-dim);
+  cursor: pointer;
+}
+.toggle-btn.active { background: var(--accent); border-color: var(--accent); color: var(--accent-text); }
+
+.row-2 { display: flex; gap: 10px; margin-top: 10px; }
+.row-2 input { flex: 1; }
+
+.row-3 { display: flex; gap: 8px; margin-top: 6px; }
+.champ-dim { flex: 1; min-width: 0; }
+.champ-dim .dim-label { display: block; font-weight: 700; font-size: 0.85rem; color: var(--text-dim); margin-bottom: 4px; }
+.champ-dim input { width: 100%; padding: 12px 8px; text-align: center; }
+
+.row-ajout-libre { display: flex; gap: 8px; margin-top: 10px; align-items: stretch; }
+.row-ajout-libre .champ-texte-libre { flex: 1; margin-top: 0; }
+.row-ajout-libre .btn-mini { white-space: nowrap; }
+
+/* ---------- Récapitulatif ---------- */
+
+.recap-contenu {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 10px;
+}
+.recap-ligne {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 1.02rem;
+}
+.recap-ligne:last-child { border-bottom: none; }
+.recap-ligne .valeur { font-weight: 700; text-align: right; }
+.recap-ligne .valeur.valeur-alerte { color: var(--warning); }
+.recap-photo {
+  width: 100%;
+  max-height: 220px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 14px;
+}
+
+/* ---------- Confirmation ---------- */
+
+.confirmation-coche {
+  width: 110px;
+  height: 110px;
+  line-height: 110px;
+  text-align: center;
+  font-size: 3rem;
+  color: var(--success);
+  background: var(--success-bg);
+  border-radius: 50%;
+  margin: 30px auto 20px;
+}
+
+/* ---------- Liste des articles ---------- */
+
+.liste-articles { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+.article-carte {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px;
+  cursor: pointer;
+}
+/* Toute la carte ouvre le détail de l'article au tap (sauf la poubelle,
+   qui a son propre gestionnaire de clic) — ce léger changement de fond
+   confirme visuellement que la carte répond au tap. */
+.article-carte:active { background: var(--bg); }
+.article-carte img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+  background: var(--bg);
+  flex-shrink: 0;
+}
+.article-carte .article-placeholder {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  border-radius: 8px;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+.article-info { flex: 1; min-width: 0; }
+.article-designation { font-weight: 700; }
+.article-meta { color: var(--text-dim); font-size: 0.95rem; }
+.article-erreur { color: var(--danger); font-size: 0.9rem; font-weight: 600; margin-top: 2px; }
+.recap-contenu .article-erreur { margin-top: 14px; }
+.badge {
+  font-size: 0.92rem;
+  font-weight: 800;
+  padding: 5px 12px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+/* Fond plein + texte blanc (plutôt que texte coloré sur fond clair) pour
+   un contraste net, y compris en plein soleil. */
+.badge.envoye { background: var(--success); color: #ffffff; }
+.badge.en_attente { background: var(--border); color: var(--text-dim); }
+.badge.echec_a_corriger { background: var(--warning); color: #ffffff; }
+
+.btn-supprimer-article {
+  border: none;
+  background: none;
+  color: var(--danger);
+  font-size: 1.3rem;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 4px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* ---------- Fenêtre de confirmation "maison" (remplace window.confirm) ---------- */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(28, 26, 23, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 24px;
+}
+.modal-boite {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 22px;
+  max-width: 400px;
+  width: 100%;
+}
+.modal-texte {
+  white-space: pre-line;
+  margin: 0 0 20px;
+  font-size: 1.02rem;
+  line-height: 1.5;
+  color: var(--text);
+}
+.modal-boutons {
+  display: flex;
+  gap: 10px;
+}
+.modal-boutons button {
+  flex: 1;
+  margin: 0;
+}
+.modal-btn-annuler {
+  background: var(--border);
+  color: var(--text);
+}
+.modal-btn-confirmer {
+  background: var(--danger);
+  color: #ffffff;
+}
