@@ -3,7 +3,7 @@
 // ============================================================
 // Coller ici l'URL du Web App Google Apps Script (celle qui se
 // termine par /exec), obtenue après "Déployer > Nouveau déploiement".
-window.BACKEND_URL = "https://script.google.com/macros/s/AKfycbzP1S5tOA14sLnBkjsrlwifXUXBKVrjlvdbAJQRO4GNMsRglGJeMIJeV3rTlJIKQmK8qQ/exec";
+window.BACKEND_URL = "https://script.google.com/macros/s/AKfycby9MpE2onvJqlloWys8TDJntE3vF9Z4Die-vJuMqDPxNRddYc6K3OyQeGxyMtdVRnaxGw/exec";
 
 // Clé secrète partagée avec le backend (voir API_SECRET tout en haut de
 // Code.gs) : sans elle, le serveur refuse toute demande. Le but n'est pas
